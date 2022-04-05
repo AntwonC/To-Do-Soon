@@ -1,7 +1,9 @@
-import {loadPage, loadSideBar, taskArea} from "./testModule.js";
+import {loadGrid, loadHeaderBar, loadMainBar, loadSideBar, taskArea} from "./testModule.js";
 
-loadPage(); 
+loadGrid(); 
+loadHeaderBar(); 
 loadSideBar(); 
-//taskArea(); 
+loadMainBar(); 
+taskArea(); 
 
 console.log("You set this up properly!");
