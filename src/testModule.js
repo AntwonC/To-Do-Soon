@@ -127,13 +127,22 @@ const loadSideBar = () => {
    //contentContainer.appendChild(sideBarContainer); 
 }
 
-const helperFunction = () => {
+const showDropDown = () => {
     const dropDownContainer = document.querySelector(".dropdown");
     const dropDownContent = document.querySelector(".dropdown-content");
 
-    dropDownContainer.addEventListener("mouseover", function(ev) {
+   
         dropDownContent.style.display = "block"; 
-    });
+   
+}
+
+const notShowDropDown = () => {
+    const dropDownContainer = document.querySelector(".dropdown");
+    const dropDownContent = document.querySelector(".dropdown-content");
+
+   
+        dropDownContent.style.display = "none"; 
+   
 }
 
 const loadMainBar = () => {
@@ -154,20 +163,24 @@ const loadMainBar = () => {
     const lowOption = document.createElement("a"); 
 
     dropDownContainer.setAttribute("class", "dropdown"); 
-    dropDownContainer.onclick = helperFunction; 
+    dropDownContainer.addEventListener("mouseenter", showDropDown); 
+    dropDownContainer.addEventListener("mouseleave", notShowDropDown);
     dropDownContainer.style.position = "relative"; 
     dropDownContainer.style.display = "inline-block"; 
 
     dropDownButton.setAttribute("class", "dropdown-button");
-    dropDownButton.style.padding = "16px"; 
+    //dropDownButton.style.padding = "16px"; 
     dropDownButton.style.fontSize = "16px"; 
-    dropDownButton.style.color = "white";
-    dropDownButton.textContent = "DropDown";
+    dropDownButton.style.width = "100px"; 
+    dropDownButton.style.height = "35px"; 
+    dropDownButton.style.marginLeft = "10px"; 
+    dropDownButton.style.marginRight = "10px"; 
+    dropDownButton.textContent = "Urgency";
 
     dropDownContent.setAttribute("class", "dropdown-content");
     dropDownContent.style.display = "none"; 
     dropDownContent.style.position = "absolute"; 
-    dropDownContent.style.minWidth = "160px"; 
+    dropDownContent.style.minWidth = "100px"; 
     dropDownContent.style.boxShadow = "0px 8px 16px 0px rgba(0,0,0,0.2)"; 
 
     highOption.setAttribute("class", "urgent-option");
@@ -201,7 +214,7 @@ const loadMainBar = () => {
     testDateField.style.marginLeft = "10px"; 
     testDateField.style.marginRight = "10px";
     
-    testTaskButton.style.width = "45px"; 
+    testTaskButton.style.width = "40px"; 
     testTaskButton.style.height = "35px"; 
     //testTaskButton.style.marginBottom = "10px";
     testTaskButton.type = "image"; 
