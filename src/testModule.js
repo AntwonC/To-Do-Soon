@@ -56,24 +56,70 @@ const loadSideBar = () => {
     const divContainer = document.querySelector("#main-container"); 
    // const backgroundDiv = document.querySelector("#inside-main-container");
     const sideBarContainer = document.createElement("div"); 
+    const taskOptionContainer = document.createElement("div"); 
     const createTaskButton = document.createElement("button"); 
+    const taskTextField = document.createElement("input"); 
+
    // const otherContainer = document.createElement("div"); 
 
+    // Container where textfield and button are in (START)
+    taskOptionContainer.style.display = "flex";
+    taskOptionContainer.style.width = "100%"; 
+    taskOptionContainer.style.height = "100px";
+    taskOptionContainer.style.justifyContent = "center"; 
+    taskOptionContainer.style.marginTop = "20px";
+
+    createTaskButton.setAttribute("id", "create-task");
+    createTaskButton.style.width = "60px"; 
+    createTaskButton.style.height = "31px"; 
+    createTaskButton.textContent = "Create"; 
+    createTaskButton.style.marginLeft = "10px";
+
+    taskTextField.setAttribute("id", "textfield-area");
+    taskTextField.style.width = "150px";
+    taskTextField.style.height = "25px";
+    taskTextField.placeholder = "Enter project name here";
+
+    taskOptionContainer.appendChild(taskTextField); 
+    taskOptionContainer.appendChild(createTaskButton); 
+    // Container where textfield and button are in (END)
+
+    // SideBarContainer STARTS
     sideBarContainer.setAttribute("id", "sidebar-container"); 
     sideBarContainer.style.backgroundColor = "grey"; 
     sideBarContainer.style.width = "100%"; 
     sideBarContainer.style.height = "100%"; 
     sideBarContainer.style.gridColumn = "1 / span 1";
     sideBarContainer.style.gridRow = "2 / span 3";
+   // sideBarContainer.style.border = "1px solid red";
+   // sideBarContainer.style.borderRadius = "10px";
 
-    createTaskButton.style.width = "70px"; 
-    createTaskButton.style.height = "50px"; 
-    createTaskButton.textContent = "PRESS ME!"; 
-    createTaskButton.style.marginLeft = "10px";
+    sideBarContainer.appendChild(taskOptionContainer); 
+    // SidebarContainer ENDS
 
-    //sideBarContainer.appendChild(otherContainer);
-    sideBarContainer.appendChild(createTaskButton);  
+    const projectContainer = document.createElement("div"); 
+    const projectHeader = document.createElement("h1");
+    const testProject = document.createElement("div"); 
+
+    projectContainer.style.border = "2px solid turquoise";
+    projectContainer.style.height = "85%";
+    projectContainer.style.borderRadius = "25px";
+
+    projectHeader.textContent = "Projects"; 
+
+    testProject.setAttribute("class", "font-text");
+    testProject.textContent = "test";
+    testProject.style.fontSize = "35px";
+    testProject.style.fontFamily = "Print";
+    //testProject.style.fontStyle = "normal";
+
+    projectContainer.appendChild(projectHeader); 
+    projectContainer.appendChild(testProject); 
+    sideBarContainer.appendChild(projectContainer); 
+
+    // Append the sidebarContainer to the grid
     divContainer.appendChild(sideBarContainer); 
+    
    //contentContainer.appendChild(sideBarContainer); 
 }
 
@@ -88,6 +134,7 @@ const loadMainBar = () => {
     mainContainer.style.gridColumn = "2 / span 3";
     mainContainer.style.gridRow = "2 / span 3"; 
     mainContainer.style.backgroundColor = "purple"; 
+    //mainContainer.style.marginLeft = "0.5px";
 
     divContainer.appendChild(mainContainer); 
 
@@ -116,5 +163,6 @@ const taskArea = () => {
     //backgroundDiv.appendChild(task);
    //sideBarContainer.appendChild(task);  
 }
+
 
 export {loadGrid, loadHeaderBar, loadMainBar, loadSideBar, taskArea};
