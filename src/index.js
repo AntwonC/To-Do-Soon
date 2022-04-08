@@ -1,5 +1,5 @@
 import {loadGrid, loadHeaderBar, loadMainBar, loadSideBar, taskArea} from "./testModule.js";
-import './styles.css';
+
 
 loadGrid(); 
 loadHeaderBar(); 

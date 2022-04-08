@@ -2,3 +2,22 @@
     font-family: "Print"; 
     src: url("./fonts/print_clearly_tt.ttf");
 } 
+
+.urgent-option {
+    color: black; 
+    width: 100px;
+    text-decoration: none; 
+    display: block;
+}
+
+.urgent-option:hover {
+    background-color: aqua;
+}
+
+.font-text:hover {
+    background-color: red;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}

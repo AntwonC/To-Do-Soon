@@ -1,3 +1,6 @@
+import './styles.css';
+import Add from './images/outline_add_circle_outline_black_18dp.png';
+
 const loadGrid = () => {
     const bodyContainer = document.querySelector("#body-element"); 
     const contentContainer = document.querySelector("#content");
@@ -111,6 +114,7 @@ const loadSideBar = () => {
     testProject.textContent = "test";
     testProject.style.fontSize = "35px";
     testProject.style.fontFamily = "Print";
+    
     //testProject.style.fontStyle = "normal";
 
     projectContainer.appendChild(projectHeader); 
@@ -123,10 +127,91 @@ const loadSideBar = () => {
    //contentContainer.appendChild(sideBarContainer); 
 }
 
+const helperFunction = () => {
+    const dropDownContainer = document.querySelector(".dropdown");
+    const dropDownContent = document.querySelector(".dropdown-content");
+
+    dropDownContainer.addEventListener("mouseover", function(ev) {
+        dropDownContent.style.display = "block"; 
+    });
+}
+
 const loadMainBar = () => {
     const contentContainer = document.querySelector("#content");
     const divContainer = document.querySelector("#main-container"); 
     const mainContainer = document.createElement("div"); 
+
+    const testTaskContainer = document.createElement("div"); 
+    const textFieldTask = document.createElement("input"); 
+    const testTaskButton = document.createElement("input");
+    const testDateField = document.createElement("input"); 
+    
+    const dropDownContainer = document.createElement("div"); 
+    const dropDownButton = document.createElement("button");  
+    const dropDownContent = document.createElement("div");
+    const highOption = document.createElement("a"); 
+    const mediumOption = document.createElement("a"); 
+    const lowOption = document.createElement("a"); 
+
+    dropDownContainer.setAttribute("class", "dropdown"); 
+    dropDownContainer.onclick = helperFunction; 
+    dropDownContainer.style.position = "relative"; 
+    dropDownContainer.style.display = "inline-block"; 
+
+    dropDownButton.setAttribute("class", "dropdown-button");
+    dropDownButton.style.padding = "16px"; 
+    dropDownButton.style.fontSize = "16px"; 
+    dropDownButton.style.color = "white";
+    dropDownButton.textContent = "DropDown";
+
+    dropDownContent.setAttribute("class", "dropdown-content");
+    dropDownContent.style.display = "none"; 
+    dropDownContent.style.position = "absolute"; 
+    dropDownContent.style.minWidth = "160px"; 
+    dropDownContent.style.boxShadow = "0px 8px 16px 0px rgba(0,0,0,0.2)"; 
+
+    highOption.setAttribute("class", "urgent-option");
+    mediumOption.setAttribute("class", "urgent-option");
+    lowOption.setAttribute("class", "urgent-option");
+
+    highOption.textContent = "High"; 
+    mediumOption.textContent = "Medium"; 
+    lowOption.textContent = "Low"; 
+
+    dropDownContainer.appendChild(dropDownButton);
+    dropDownContent.appendChild(highOption);
+    dropDownContent.appendChild(mediumOption);
+    dropDownContent.appendChild(lowOption);
+   // dropDownButton.appendChild(dropDownContent); 
+    dropDownContainer.appendChild(dropDownContent);
+
+
+
+    testTaskContainer.style.width = "100%"; 
+    testTaskContainer.style.display = "flex"; 
+    testTaskContainer.style.justifyContent = "left";
+
+    textFieldTask.placeholder = "Task Here"; 
+    textFieldTask.style.width = "150px";
+    textFieldTask.style.height = "30px"; 
+
+    testDateField.placeholder = "MM/DD/YYYY"; 
+    testDateField.style.width = "90px";
+    testDateField.style.height = "30px";
+    testDateField.style.marginLeft = "10px"; 
+    testDateField.style.marginRight = "10px";
+    
+    testTaskButton.style.width = "45px"; 
+    testTaskButton.style.height = "35px"; 
+    //testTaskButton.style.marginBottom = "10px";
+    testTaskButton.type = "image"; 
+    testTaskButton.src = Add;
+
+    testTaskContainer.appendChild(textFieldTask); 
+    testTaskContainer.appendChild(testDateField);
+    testTaskContainer.appendChild(dropDownContainer);
+    testTaskContainer.appendChild(testTaskButton);
+    mainContainer.appendChild(testTaskContainer); 
 
     mainContainer.setAttribute("id", "actual-content-container");
     mainContainer.style.width = "100%"; 
