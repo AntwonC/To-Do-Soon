@@ -130,19 +130,38 @@ const loadSideBar = () => {
 const showDropDown = () => {
     const dropDownContainer = document.querySelector(".dropdown");
     const dropDownContent = document.querySelector(".dropdown-content");
-
-   
-        dropDownContent.style.display = "block"; 
-   
+  
+        dropDownContent.style.display = "block";    
 }
 
 const notShowDropDown = () => {
     const dropDownContainer = document.querySelector(".dropdown");
     const dropDownContent = document.querySelector(".dropdown-content");
 
-   
-        dropDownContent.style.display = "none"; 
-   
+        dropDownContent.style.display = "none";   
+}
+
+const selectPriorityOption = (element, button) => {
+   // const dropDownButton = document.querySelector(".dropdown-button");
+   console.log(element); 
+   console.log(button.textContent); 
+   button.textContent = element.textContent;
+   // console.log(element.textContent); 
+    //console.log(button); 
+    //dropDownButton.textContent = element.textContent; 
+    //console.log(element); 
+    /*var options = {
+        root: document.querySelectorAll(".urgent-option")
+    };
+
+    var observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            callback(entry.intersectionRatio > 0);
+        });
+    }, options);
+    //console.log(event.currentTarget.myParam);
+
+    observer.observe(element);  */
 }
 
 const loadMainBar = () => {
@@ -154,6 +173,7 @@ const loadMainBar = () => {
     const textFieldTask = document.createElement("input"); 
     const testTaskButton = document.createElement("input");
     const testDateField = document.createElement("input"); 
+    const testDescriptionField = document.createElement("input");
     
     const dropDownContainer = document.createElement("div"); 
     const dropDownButton = document.createElement("button");  
@@ -169,19 +189,22 @@ const loadMainBar = () => {
     dropDownContainer.style.display = "inline-block"; 
 
     dropDownButton.setAttribute("class", "dropdown-button");
+    //dropDownButton.setAttribute("id", "dropButton"); 
     //dropDownButton.style.padding = "16px"; 
     dropDownButton.style.fontSize = "16px"; 
     dropDownButton.style.width = "100px"; 
     dropDownButton.style.height = "35px"; 
     dropDownButton.style.marginLeft = "10px"; 
     dropDownButton.style.marginRight = "10px"; 
-    dropDownButton.textContent = "Urgency";
+    dropDownButton.textContent = "Priority";
+    //dropDownButton.style.display = "hidden";
 
     dropDownContent.setAttribute("class", "dropdown-content");
     dropDownContent.style.display = "none"; 
     dropDownContent.style.position = "absolute"; 
-    dropDownContent.style.minWidth = "100px"; 
-    dropDownContent.style.boxShadow = "0px 8px 16px 0px rgba(0,0,0,0.2)"; 
+    dropDownContent.style.width = "90px"; 
+    dropDownContent.style.marginLeft = "10px";
+    //dropDownContent.style.boxShadow = "0px 8px 16px 0px rgba(0,0,0,0.2)"; 
 
     highOption.setAttribute("class", "urgent-option");
     mediumOption.setAttribute("class", "urgent-option");
@@ -191,6 +214,46 @@ const loadMainBar = () => {
     mediumOption.textContent = "Medium"; 
     lowOption.textContent = "Low"; 
 
+    // Add event listener to the urgent-option class
+    const elements = document.getElementsByClassName("urgent-option");
+
+    highOption.addEventListener("click", function() {
+        selectPriorityOption(highOption, dropDownButton);
+    }); 
+
+    mediumOption.addEventListener("click", function() {
+        selectPriorityOption(mediumOption, dropDownButton);
+    }); 
+
+    lowOption.addEventListener("click", function() {
+        selectPriorityOption(lowOption, dropDownButton);
+    }); 
+    //mediumOption.addEventListener("click", selectPriorityOption(mediumOption, dropDownButton)); 
+    //lowOption.addEventListener("click", selectPriorityOption(lowOption, dropDownButton)); 
+
+    console.log(`${dropDownButton.textContent}`);
+
+    /*selectPriorityOption(elements, visible => { 
+        console.log(`elenents: ${elements}`);
+    }); */
+
+    //elements.addEventListener("change")
+    /*dropDownButton.addEventListener("change", (e) => {
+        console.log(`e.target.value = ${ e.target.value }`);
+        console.log(`dropDownButton.options[dropDownButton.selectedIndex].value = ${ dropDownButton.options[dropDownButton.selectedIndex].value }`);
+    }); */
+
+  /*  for(var i = 0; i < elements.length; i++) {
+        console.log(elements[i].textContent); 
+        elements[i].addEventListener('click', selectPriorityOption, false); 
+    }  */
+    /*Array.from(elements).forEach(function(element) {
+        //console.log(element);
+        element.addEventListener("click", selectPriorityOption); 
+       // element.myParam = element;
+    }); */
+
+
     dropDownContainer.appendChild(dropDownButton);
     dropDownContent.appendChild(highOption);
     dropDownContent.appendChild(mediumOption);
@@ -198,15 +261,21 @@ const loadMainBar = () => {
    // dropDownButton.appendChild(dropDownContent); 
     dropDownContainer.appendChild(dropDownContent);
 
-
-
+    // TestTaskContainer STARTS
     testTaskContainer.style.width = "100%"; 
     testTaskContainer.style.display = "flex"; 
     testTaskContainer.style.justifyContent = "left";
 
-    textFieldTask.placeholder = "Task Here"; 
-    textFieldTask.style.width = "150px";
+    textFieldTask.placeholder = "Task Title Here"; 
+    textFieldTask.style.width = "100px";
     textFieldTask.style.height = "30px"; 
+    textFieldTask.style.marginRight = "10px";
+
+    testDescriptionField.placeholder = "Details of your task"; 
+    testDescriptionField.style.width = "150px"; 
+    testDescriptionField.style.height = "30px"; 
+    testDescriptionField.style.marginLeft = "10px"; 
+    testDescriptionField.style.marginRight = "10px"; 
 
     testDateField.placeholder = "MM/DD/YYYY"; 
     testDateField.style.width = "90px";
@@ -220,12 +289,14 @@ const loadMainBar = () => {
     testTaskButton.type = "image"; 
     testTaskButton.src = Add;
 
-    testTaskContainer.appendChild(textFieldTask); 
+    testTaskContainer.appendChild(textFieldTask);
+    testTaskContainer.appendChild(testDescriptionField); 
     testTaskContainer.appendChild(testDateField);
     testTaskContainer.appendChild(dropDownContainer);
     testTaskContainer.appendChild(testTaskButton);
     mainContainer.appendChild(testTaskContainer); 
 
+    // // TestTaskContainer ENDS
     mainContainer.setAttribute("id", "actual-content-container");
     mainContainer.style.width = "100%"; 
     mainContainer.style.height = "100%"; 
