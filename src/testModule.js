@@ -143,25 +143,9 @@ const notShowDropDown = () => {
 
 const selectPriorityOption = (element, button) => {
    // const dropDownButton = document.querySelector(".dropdown-button");
-   console.log(element); 
-   console.log(button.textContent); 
+  // console.log(element); 
+   //console.log(button.textContent); 
    button.textContent = element.textContent;
-   // console.log(element.textContent); 
-    //console.log(button); 
-    //dropDownButton.textContent = element.textContent; 
-    //console.log(element); 
-    /*var options = {
-        root: document.querySelectorAll(".urgent-option")
-    };
-
-    var observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            callback(entry.intersectionRatio > 0);
-        });
-    }, options);
-    //console.log(event.currentTarget.myParam);
-
-    observer.observe(element);  */
 }
 
 const loadMainBar = () => {
@@ -197,7 +181,6 @@ const loadMainBar = () => {
     dropDownButton.style.marginLeft = "10px"; 
     dropDownButton.style.marginRight = "10px"; 
     dropDownButton.textContent = "Priority";
-    //dropDownButton.style.display = "hidden";
 
     dropDownContent.setAttribute("class", "dropdown-content");
     dropDownContent.style.display = "none"; 
@@ -214,8 +197,7 @@ const loadMainBar = () => {
     mediumOption.textContent = "Medium"; 
     lowOption.textContent = "Low"; 
 
-    // Add event listener to the urgent-option class
-    const elements = document.getElementsByClassName("urgent-option");
+    // START: Add event listener to each option 
 
     highOption.addEventListener("click", function() {
         selectPriorityOption(highOption, dropDownButton);
@@ -227,32 +209,9 @@ const loadMainBar = () => {
 
     lowOption.addEventListener("click", function() {
         selectPriorityOption(lowOption, dropDownButton);
-    }); 
-    //mediumOption.addEventListener("click", selectPriorityOption(mediumOption, dropDownButton)); 
-    //lowOption.addEventListener("click", selectPriorityOption(lowOption, dropDownButton)); 
-
-    console.log(`${dropDownButton.textContent}`);
-
-    /*selectPriorityOption(elements, visible => { 
-        console.log(`elenents: ${elements}`);
-    }); */
-
-    //elements.addEventListener("change")
-    /*dropDownButton.addEventListener("change", (e) => {
-        console.log(`e.target.value = ${ e.target.value }`);
-        console.log(`dropDownButton.options[dropDownButton.selectedIndex].value = ${ dropDownButton.options[dropDownButton.selectedIndex].value }`);
-    }); */
-
-  /*  for(var i = 0; i < elements.length; i++) {
-        console.log(elements[i].textContent); 
-        elements[i].addEventListener('click', selectPriorityOption, false); 
-    }  */
-    /*Array.from(elements).forEach(function(element) {
-        //console.log(element);
-        element.addEventListener("click", selectPriorityOption); 
-       // element.myParam = element;
-    }); */
-
+    });
+    
+    // END: Add event listener to each option
 
     dropDownContainer.appendChild(dropDownButton);
     dropDownContent.appendChild(highOption);
@@ -261,33 +220,45 @@ const loadMainBar = () => {
    // dropDownButton.appendChild(dropDownContent); 
     dropDownContainer.appendChild(dropDownContent);
 
-    // TestTaskContainer STARTS
+    // START: Container that holds all the textfield elements
     testTaskContainer.style.width = "100%"; 
     testTaskContainer.style.display = "flex"; 
     testTaskContainer.style.justifyContent = "left";
+    // END: Container that holds all the textfield elements
 
+    // START: Task Title element
+    textFieldTask.setAttribute("id", "textfield-title");
     textFieldTask.placeholder = "Task Title Here"; 
     textFieldTask.style.width = "100px";
     textFieldTask.style.height = "30px"; 
     textFieldTask.style.marginRight = "10px";
+    // END: Task Title element
 
+    // START: Task description element
+    testDescriptionField.setAttribute("id", "textfield-desc"); 
     testDescriptionField.placeholder = "Details of your task"; 
     testDescriptionField.style.width = "150px"; 
     testDescriptionField.style.height = "30px"; 
     testDescriptionField.style.marginLeft = "10px"; 
     testDescriptionField.style.marginRight = "10px"; 
+    // END: Task description element
 
+    // START: Task date element
+    testDateField.setAttribute("id", "textfield-date"); 
     testDateField.placeholder = "MM/DD/YYYY"; 
     testDateField.style.width = "90px";
     testDateField.style.height = "30px";
     testDateField.style.marginLeft = "10px"; 
     testDateField.style.marginRight = "10px";
-    
+    // END: Task date element
+
+    // START: Button to create user task 
+    testTaskButton.setAttribute("id", "create-task-button");
     testTaskButton.style.width = "40px"; 
     testTaskButton.style.height = "35px"; 
-    //testTaskButton.style.marginBottom = "10px";
     testTaskButton.type = "image"; 
     testTaskButton.src = Add;
+    // END: Button to create user task 
 
     testTaskContainer.appendChild(textFieldTask);
     testTaskContainer.appendChild(testDescriptionField); 
@@ -309,11 +280,40 @@ const loadMainBar = () => {
 
 }
 
+const checkTaskFields = () => {
+    const testFieldTask = document.querySelector("#textfield-title"); 
+    const testDateField = document.querySelector("#textfield-date");
+    const testDescriptionField = document.querySelector("#textfield-desc");
+    const dropDownButton = document.querySelector(".dropdown-button");
+    const testTaskButton = document.querySelector("#create-task-button");
+
+   
+    if ( testFieldTask !== "" ) {
+        alert("Need a task title"); 
+        console.log(`|${testFieldTask.textContent}|`); 
+    }
+
+    //console.log(testFieldTask); 
+}
+
 const taskArea = () => {
-    const backgroundDiv = document.querySelector("#inside-main-container");
-    const headerContainer = document.querySelector("#header-container"); 
-    const sideBarContainer = document.querySelector("#sidebar-container"); 
+    //const backgroundDiv = document.querySelector("#inside-main-container");
+    //const headerContainer = document.querySelector("#header-container"); 
+    //const sideBarContainer = document.querySelector("#sidebar-container"); 
     const mainContainer = document.querySelector("#actual-content-container"); 
+    
+    const testFieldTask = document.querySelector("#textfield-title"); 
+    const testDateField = document.querySelector("#textfield-date");
+    const testDescriptionField = document.querySelector("#textfield-desc");
+    const dropDownButton = document.querySelector(".dropdown-button");
+    const testTaskButton = document.querySelector("#create-task-button");
+
+
+    testTaskButton.addEventListener("click", function() {
+       // alert("Calling alert from taskArea()"); 
+       checkTaskFields(); 
+    });
+
     const task = document.createElement("div"); 
 
     task.style.width = "100px"; 
@@ -327,7 +327,7 @@ const taskArea = () => {
     //task.style.right = "0"; 
     //task.style.justifyContent = "right"; 
 
-    mainContainer.appendChild(task);
+    //mainContainer.appendChild(task);
     //headerContainer.appendChild(task); 
     //backgroundDiv.appendChild(task);
    //sideBarContainer.appendChild(task);  

@@ -5,6 +5,6 @@ loadGrid();
 loadHeaderBar(); 
 loadSideBar(); 
 loadMainBar(); 
-//taskArea(); 
+taskArea(); 
 
 console.log("You set this up properly!");
