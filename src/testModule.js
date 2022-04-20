@@ -279,21 +279,70 @@ const loadMainBar = () => {
     divContainer.appendChild(mainContainer); 
 
 }
+// PROBLEM: Wanted to pass parameters into event listener as input from user is used (closure)
+// https://stackoverflow.com/questions/44162969/javascript-addeventlistener-function-parameters
+const inputHandler = (evt, fieldElement) => {
+    //console.log(e); 
+    //fieldElement.textContent = e.target.value; 
+    console.log(evt.target.value);
+
+    fieldElement.textContent = evt.target.value;
+    console.log(fieldElement);  
+    //fieldElement.textContent = 
+    //console.log(`|${this.target.value}|`);
+    //console.log(`myParam: |${this.currentTarget.myParam}|`);
+    //console.log(`myParam.textContent: |${e.currentTarget.myParam.textContent}|`);
+
+
+    //textField.oninput
+    //console.log("in here"); 
+   // textField.textContent = input.target.value; 
+   //console.log(`|${fieldElement.textContent}|`);
+    //console.log(`|${log.textContent}|`);
+}
+
 
 const checkTaskFields = () => {
+    const log = document.createElement("div"); 
+    log.setAttribute("id", "log-value"); 
     const testFieldTask = document.querySelector("#textfield-title"); 
     const testDateField = document.querySelector("#textfield-date");
     const testDescriptionField = document.querySelector("#textfield-desc");
     const dropDownButton = document.querySelector(".dropdown-button");
     const testTaskButton = document.querySelector("#create-task-button");
 
-   
-    if ( testFieldTask !== "" ) {
-        alert("Need a task title"); 
-        console.log(`|${testFieldTask.textContent}|`); 
-    }
-
+    //testFieldTask.addEventListener("input", inputHandler);
+   /*testFieldTask.addEventListener("input", function() {
+        inputHandler();
+    }); */
+    //testFieldTask.oninput = inputHandler(textField); 
     //console.log(testFieldTask); 
+}
+
+const addInputListeners = () =>  {
+    const testFieldTask = document.querySelector("#textfield-title"); 
+    const testDateField = document.querySelector("#textfield-date");
+    const testDescriptionField = document.querySelector("#textfield-desc");
+
+   /* ( function (i) {
+        testFieldTask.addEventListener("input", function (e) {
+            inputHandler(); 
+        }, false); 
+    })(testFieldTask); */
+    
+
+    //testFieldTask.myParam = testFieldTask; 
+    testFieldTask.addEventListener("input", function(evt) {
+        inputHandler(evt, testFieldTask); 
+    });
+    /*testFieldTask.addEventListener("input", (function ( myParam ) {
+        return function () {
+            inputHandler(); 
+        }
+    } (testFieldTask)) , false);
+     */
+
+
 }
 
 const taskArea = () => {
@@ -308,10 +357,12 @@ const taskArea = () => {
     const dropDownButton = document.querySelector(".dropdown-button");
     const testTaskButton = document.querySelector("#create-task-button");
 
+    addInputListeners(); 
+
 
     testTaskButton.addEventListener("click", function() {
        // alert("Calling alert from taskArea()"); 
-       checkTaskFields(); 
+       //checkTaskFields(); 
     });
 
     const task = document.createElement("div"); 
