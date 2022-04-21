@@ -228,6 +228,7 @@ const loadMainBar = () => {
 
     // START: Task Title element
     textFieldTask.setAttribute("id", "textfield-title");
+    textFieldTask.setAttribute("class", "input-element");
     textFieldTask.placeholder = "Task Title Here"; 
     textFieldTask.style.width = "100px";
     textFieldTask.style.height = "30px"; 
@@ -236,6 +237,7 @@ const loadMainBar = () => {
 
     // START: Task description element
     testDescriptionField.setAttribute("id", "textfield-desc"); 
+    testDescriptionField.setAttribute("class", "input-element"); 
     testDescriptionField.placeholder = "Details of your task"; 
     testDescriptionField.style.width = "150px"; 
     testDescriptionField.style.height = "30px"; 
@@ -245,6 +247,7 @@ const loadMainBar = () => {
 
     // START: Task date element
     testDateField.setAttribute("id", "textfield-date"); 
+    testDateField.setAttribute("class", "input-element"); 
     testDateField.placeholder = "MM/DD/YYYY"; 
     testDateField.style.width = "90px";
     testDateField.style.height = "30px";
@@ -284,32 +287,39 @@ const loadMainBar = () => {
 const inputHandler = (evt, fieldElement) => {
     //console.log(e); 
     //fieldElement.textContent = e.target.value; 
-    console.log(evt.target.value);
-
+    //console.log(evt.target.value);
     fieldElement.textContent = evt.target.value;
-    console.log(fieldElement);  
-    //fieldElement.textContent = 
-    //console.log(`|${this.target.value}|`);
-    //console.log(`myParam: |${this.currentTarget.myParam}|`);
-    //console.log(`myParam.textContent: |${e.currentTarget.myParam.textContent}|`);
-
-
-    //textField.oninput
-    //console.log("in here"); 
-   // textField.textContent = input.target.value; 
-   //console.log(`|${fieldElement.textContent}|`);
-    //console.log(`|${log.textContent}|`);
+    //console.log(fieldElement);  
 }
 
 
 const checkTaskFields = () => {
-    const log = document.createElement("div"); 
-    log.setAttribute("id", "log-value"); 
+    const message = document.createElement("div"); 
+    
     const testFieldTask = document.querySelector("#textfield-title"); 
     const testDateField = document.querySelector("#textfield-date");
     const testDescriptionField = document.querySelector("#textfield-desc");
     const dropDownButton = document.querySelector(".dropdown-button");
     const testTaskButton = document.querySelector("#create-task-button");
+
+    const fieldElements = document.querySelectorAll(".input-element");
+
+    // Task Title
+    // DO: Check if its empty (DONE) 
+    if ( testFieldTask.textContent.length == 0 ) {
+        alert(`This textfield is empty`);
+    } else {
+        alert(`Task Title is not empty`);
+    }
+
+    // Task Details 
+    // DO: Check if its empty, could be anything
+
+    // Task Date
+    // DO: Check if its empty and need to check for valid date
+
+    //if ( testDateField)
+
 
     //testFieldTask.addEventListener("input", inputHandler);
    /*testFieldTask.addEventListener("input", function() {
@@ -324,17 +334,23 @@ const addInputListeners = () =>  {
     const testDateField = document.querySelector("#textfield-date");
     const testDescriptionField = document.querySelector("#textfield-desc");
 
+    const fieldElements = document.querySelectorAll(".input-element");
    /* ( function (i) {
         testFieldTask.addEventListener("input", function (e) {
             inputHandler(); 
         }, false); 
     })(testFieldTask); */
     
+    fieldElements.forEach(element => {
+        element.addEventListener("input", function(evt) {
+            inputHandler(evt, element); 
+        });
+    });
 
     //testFieldTask.myParam = testFieldTask; 
-    testFieldTask.addEventListener("input", function(evt) {
-        inputHandler(evt, testFieldTask); 
-    });
+    //testFieldTask.addEventListener("input", function(evt) {
+     //   inputHandler(evt, testFieldTask); 
+    //});
     /*testFieldTask.addEventListener("input", (function ( myParam ) {
         return function () {
             inputHandler(); 
@@ -362,7 +378,7 @@ const taskArea = () => {
 
     testTaskButton.addEventListener("click", function() {
        // alert("Calling alert from taskArea()"); 
-       //checkTaskFields(); 
+       checkTaskFields(); 
     });
 
     const task = document.createElement("div"); 
