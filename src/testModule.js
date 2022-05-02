@@ -1,5 +1,6 @@
 import './styles.css';
 import Add from './images/outline_add_circle_outline_black_18dp.png';
+import { format } from 'date-fns';
 
 const loadGrid = () => {
     const bodyContainer = document.querySelector("#body-element"); 
@@ -270,7 +271,7 @@ const loadMainBar = () => {
     testTaskContainer.appendChild(testTaskButton);
     mainContainer.appendChild(testTaskContainer); 
 
-    // // TestTaskContainer ENDS
+    // TestTaskContainer ENDS
     mainContainer.setAttribute("id", "actual-content-container");
     mainContainer.style.width = "100%"; 
     mainContainer.style.height = "100%"; 
@@ -297,20 +298,47 @@ const checkTaskFields = () => {
     const message = document.createElement("div"); 
     
     const testFieldTask = document.querySelector("#textfield-title"); 
-    const testDateField = document.querySelector("#textfield-date");
     const testDescriptionField = document.querySelector("#textfield-desc");
+    const testDateField = document.querySelector("#textfield-date");
     const dropDownButton = document.querySelector(".dropdown-button");
     const testTaskButton = document.querySelector("#create-task-button");
 
     const fieldElements = document.querySelectorAll(".input-element");
 
+
+    const alertBlankFields = document.createElement("div"); 
+
     // Task Title
     // DO: Check if its empty (DONE) 
-    if ( testFieldTask.textContent.length == 0 ) {
-        alert(`This textfield is empty`);
-    } else {
-        alert(`Task Title is not empty`);
+    if ( testFieldTask.textContent.length === 0 ) {
+        alertBlankFields.textContent += "Task Title is empty.\n"; 
+        //alert(`Task Title is empty`);
+    } 
+
+    // Checking if Task Description is empty
+    if ( testDescriptionField.textContent.length === 0 ) {
+        alertBlankFields.textContent += "Task Description is empty.\n"; 
     }
+    // Check if Task Date is empty.
+    // Need to check if valid date
+    if ( testDateField.textContent.length === 0 ) {
+        alertBlankFields.textContent += "Task Date is empty.\n"; 
+    } 
+
+    // Check if Priority is selected
+    if ( dropDownButton.textContent === "Priority" ) {
+        alertBlankFields.textContent += "Pick a level of priority.\n"; 
+       // alert("Pick the level of priority.");
+    } 
+
+    if ( alertBlankFields.textContent.length > 0 ) {
+        alert(alertBlankFields.textContent); 
+        return false; 
+    } else {
+        return true; 
+        //alert("All fields are not empty"); 
+    }
+
 
     // Task Details 
     // DO: Check if its empty, could be anything
@@ -373,13 +401,44 @@ const taskArea = () => {
     const dropDownButton = document.querySelector(".dropdown-button");
     const testTaskButton = document.querySelector("#create-task-button");
 
+    var checkEmpty = null; 
+
     addInputListeners(); 
 
 
     testTaskButton.addEventListener("click", function() {
        // alert("Calling alert from taskArea()"); 
-       checkTaskFields(); 
+       checkEmpty = checkTaskFields(); 
+       
+       //console.log(checkEmpty); 
+
+       if ( checkEmpty ) {
+        alert("Move onto next step of checking for valid dates...."); 
+        
+        var counterBreak = 0; 
+        // Run through the date input and check for valid dates
+        var userDateInput = testDateField.textContent;
+        console.log(userDateInput); 
+        var month = ""; 
+        var day = ""; 
+        var year = ""; 
+
+        for(var i = 0; i < 2; i++) {
+            if ( Number.isInteger(userDateInput.charAt(i)) ) {
+                month += userDateInput.charAt(i);
+            }
+        }
+
+        for(var i = 3; i < 5; i++) {
+            if ( Number.isInteger(userDateInput.charAt(i)) ) {
+                day += userDateInput.charAt(i);
+            }
+        }
+
+        console.log(`month: ${parseInt(month)} | day: ${day}`);
+        } 
     });
+    
 
     const task = document.createElement("div"); 
 
