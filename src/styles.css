@@ -18,3 +18,12 @@
     background-color: red;
 }
 
+#popup {
+    background-color: white; 
+    width: 420px; 
+    height: 200px; 
+    position: absolute; 
+     
+    border-radius: 8px; 
+    
+}

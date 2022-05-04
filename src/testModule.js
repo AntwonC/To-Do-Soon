@@ -1,4 +1,5 @@
 import './styles.css';
+//import './styles.scss';
 import Add from './images/outline_add_circle_outline_black_18dp.png';
 import { format } from 'date-fns';
 
@@ -389,6 +390,18 @@ const addInputListeners = () =>  {
 
 }
 
+const openDetails = () => {
+    const mainContainer = document.querySelector("#main-container"); 
+    const detailsButton = document.querySelector("#details-button"); 
+    const popupContainer = document.createElement("div"); 
+
+    popupContainer.setAttribute("id", "popup"); 
+    console.log("inside openDetails()");
+    mainContainer.appendChild(popupContainer); 
+
+    
+}
+
 const taskArea = () => {
     //const backgroundDiv = document.querySelector("#inside-main-container");
     //const headerContainer = document.querySelector("#header-container"); 
@@ -417,36 +430,94 @@ const taskArea = () => {
         
         var counterBreak = 0; 
         // Run through the date input and check for valid dates
-        var userDateInput = testDateField.textContent;
-        console.log(userDateInput); 
         var month = ""; 
         var day = ""; 
         var year = ""; 
 
-        for(var i = 0; i < 2; i++) {
-            if ( Number.isInteger(userDateInput.charAt(i)) ) {
-                month += userDateInput.charAt(i);
+        // Grab the month, day, and year from the testDateField and use substring to get each value
+        month = testDateField.textContent.substring(0,3); 
+
+        day = testDateField.textContent.substring(4,5); 
+
+        year = testDateField.textContent.substring(6,11);
+        
+        // Convert the string to integers if possible 
+
+        var monthInt = parseInt(month); 
+        var dayInt = parseInt(day); 
+        var yearInt = parseInt(year); 
+        var userDate = null; 
+        
+        if ( isNaN(monthInt) || isNaN(dayInt) || isNaN(yearInt) ) {
+            alert("Invalid date"); 
+        } else {
+            userDate = format(new Date(parseInt(year), parseInt(month)-1, parseInt(day)), "MM/dd/yyyy");
+            console.log(userDate); 
+
+            // Ready to create new task 
+            
+            
+            
+            
+            
+            const task = document.createElement("div"); 
+            const checkBox = document.createElement("input"); 
+            const detailsButton = document.createElement("button"); 
+
+            // START: Checkbox on task
+            checkBox.type = "checkbox";
+            checkBox.style.float= "left";  
+            checkBox.style.height = "50px";
+            checkBox.style.marginRight = "10px";  
+            // END: Checkbox on task
+
+            // START: Task
+            
+            if ( dropDownButton.textContent === "High" ) {
+                task.style.backgroundColor = "red"; 
+            } else if ( dropDownButton.textContent === "Medium" ) {
+                task.style.backgroundColor = "yellow"; 
+            } else if ( dropDownButton.textContent === "Low" ) {
+                task.style.backgroundColor = "green"; 
             }
+            task.style.height = "50px"; 
+            
+            task.style.marginTop = "10px";
+            
+            task.style.fontSize = "50px"; 
+            
+            task.textContent = `${testFieldTask.textContent}`;
+            // END: Task
+            
+            // START: Details Button
+            detailsButton.setAttribute("id", "details-button"); 
+            detailsButton.textContent = "Details"; 
+            detailsButton.style.width = "70px";
+            detailsButton.style.height = "50px";
+            //detailsButton.style.backgroundColor = "green";
+            detailsButton.style.float = "right";
+
+            detailsButton.addEventListener("click", openDetails);
+            // END: Details Button
+            //task.style.gridColumn = "4 / span 1";
+            //task.style.gridRow = "3 / span 1";
+            
+            task.appendChild(checkBox); 
+            task.appendChild(detailsButton);
+            mainContainer.appendChild(task); 
+
         }
 
-        for(var i = 3; i < 5; i++) {
-            if ( Number.isInteger(userDateInput.charAt(i)) ) {
-                day += userDateInput.charAt(i);
-            }
-        }
+        console.log(`month: ${parseInt(month)} | day: ${day} | year: ${year}`);
 
-        console.log(`month: ${parseInt(month)} | day: ${day}`);
+
+
+
         } 
     });
     
 
-    const task = document.createElement("div"); 
 
-    task.style.width = "100px"; 
-    task.style.height = "100px"; 
-    task.style.backgroundColor = "red"; 
-    task.style.gridColumn = "4 / span 1";
-    task.style.gridRow = "3 / span 1";
     
     //task.style.position = "absolute"; 
     //task.style.top = "0"; 
