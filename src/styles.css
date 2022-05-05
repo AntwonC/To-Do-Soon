@@ -21,9 +21,14 @@
 #popup {
     background-color: white; 
     width: 420px; 
-    height: 200px; 
-    position: absolute; 
-     
+    height: 300px; 
+    grid-column: 2 / span 1; 
+    grid-row: 3 / span 1; 
     border-radius: 8px; 
     
+}
+
+#close-button:hover {
+    cursor: pointer; 
+    color: black; 
 }

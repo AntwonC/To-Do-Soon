@@ -393,10 +393,34 @@ const addInputListeners = () =>  {
 const openDetails = () => {
     const mainContainer = document.querySelector("#main-container"); 
     const detailsButton = document.querySelector("#details-button"); 
+    const testDescriptionField = document.querySelector("#textfield-desc");
+    
     const popupContainer = document.createElement("div"); 
+    const closePopUpButton = document.createElement("span"); 
+    const taskDescription = document.createElement("p"); 
+
+
+    closePopUpButton.setAttribute("id", "close-button"); 
+    closePopUpButton.innerHTML = "&times;"; 
+    closePopUpButton.style.float = "right"; 
+    closePopUpButton.style.fontSize = "28px"; 
+    closePopUpButton.style.fontWeight = "bold"; 
+
+    closePopUpButton.addEventListener("click", function() {
+        closePopUpButton.style.display = "none"; 
+        mainContainer.removeChild(popupContainer); 
+    });
+    
+
+    taskDescription.textContent = `Description:\n${testDescriptionField.textContent}`;
+    taskDescription.style.marginTop = "20px"; 
 
     popupContainer.setAttribute("id", "popup"); 
-    console.log("inside openDetails()");
+
+    popupContainer.appendChild(closePopUpButton);
+    popupContainer.appendChild(taskDescription); 
+
+    //console.log("inside openDetails()");
     mainContainer.appendChild(popupContainer); 
 
     
@@ -417,7 +441,7 @@ const taskArea = () => {
     var checkEmpty = null; 
 
     addInputListeners(); 
-
+   
 
     testTaskButton.addEventListener("click", function() {
        // alert("Calling alert from taskArea()"); 
