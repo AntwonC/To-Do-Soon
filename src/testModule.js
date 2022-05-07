@@ -3,6 +3,9 @@ import './styles.css';
 import Add from './images/outline_add_circle_outline_black_18dp.png';
 import { format } from 'date-fns';
 
+localStorage.clear(); 
+
+
 const loadGrid = () => {
     const bodyContainer = document.querySelector("#body-element"); 
     const contentContainer = document.querySelector("#content");
@@ -287,11 +290,8 @@ const loadMainBar = () => {
 // PROBLEM: Wanted to pass parameters into event listener as input from user is used (closure)
 // https://stackoverflow.com/questions/44162969/javascript-addeventlistener-function-parameters
 const inputHandler = (evt, fieldElement) => {
-    //console.log(e); 
-    //fieldElement.textContent = e.target.value; 
-    //console.log(evt.target.value);
+
     fieldElement.textContent = evt.target.value;
-    //console.log(fieldElement);  
 }
 
 
@@ -390,40 +390,139 @@ const addInputListeners = () =>  {
 
 }
 
-const openDetails = () => {
+const getTaskInStorage = (keyName, keyValue) => {
+    const taskDetails = localStorage.getItem(keyName, keyValue); 
+
+    return taskDetails; 
+    //console.log(taskDetails);
+}
+const setTaskInStorage = (keyName, keyValue) =>  {
+    localStorage.setItem(keyName, keyValue); 
+
+    //console.log(localStorage.getItem(keyName, keyValue));
+    console.log(localStorage); 
+}
+
+const openDetails = (currTaskTitle, currTaskDesc, currTaskDate, currTaskPriority, detailsParent) => {
+
+    console.log(detailsParent.id);
     const mainContainer = document.querySelector("#main-container"); 
     const detailsButton = document.querySelector("#details-button"); 
     const testDescriptionField = document.querySelector("#textfield-desc");
     
+    const testFieldTask = document.querySelector("#textfield-title"); 
+    // All content for popupContainer
     const popupContainer = document.createElement("div"); 
     const closePopUpButton = document.createElement("span"); 
     const taskDescription = document.createElement("p"); 
-
-
+    const taskDatePopUp = document.createElement("p"); 
+    const taskPriorityPopUp = document.createElement("p"); 
+    // All content for popupContainer
+    
+    // START: closePopUpButton 
     closePopUpButton.setAttribute("id", "close-button"); 
     closePopUpButton.innerHTML = "&times;"; 
     closePopUpButton.style.float = "right"; 
     closePopUpButton.style.fontSize = "28px"; 
     closePopUpButton.style.fontWeight = "bold"; 
+    // ENDS: closePopUpButton 
 
+    // add event listener for closing popup 
     closePopUpButton.addEventListener("click", function() {
         closePopUpButton.style.display = "none"; 
         mainContainer.removeChild(popupContainer); 
     });
-    
 
-    taskDescription.textContent = `Description:\n${testDescriptionField.textContent}`;
+    var counter = 0; 
+    const taskDetails = getTaskInStorage(`${detailsParent.id}${counter++}`, currTaskDesc.textContent);
+    const taskDate = getTaskInStorage(`${detailsParent.id}${counter++}`, currTaskDate.textContent);
+    const taskPriority = getTaskInStorage(`${detailsParent.id}${counter++}`, currTaskPriority.textContent);
+
+    taskDescription.textContent = `Description:\n${taskDetails}`;
     taskDescription.style.marginTop = "20px"; 
+
+    taskDatePopUp.textContent = `Date: ${taskDate}`; 
+
+    taskPriorityPopUp.textContent = `Priority: ${taskPriority}`;
 
     popupContainer.setAttribute("id", "popup"); 
 
     popupContainer.appendChild(closePopUpButton);
-    popupContainer.appendChild(taskDescription); 
+    popupContainer.appendChild(taskDescription);
+    popupContainer.appendChild(taskDatePopUp);  
+    popupContainer.appendChild(taskPriorityPopUp);  
 
     //console.log("inside openDetails()");
     mainContainer.appendChild(popupContainer); 
 
     
+}
+
+const createTask = (userDate) => {
+    const mainContainer = document.querySelector("#actual-content-container"); 
+    
+    const testFieldTask = document.querySelector("#textfield-title"); 
+    const testDateField = document.querySelector("#textfield-date");
+    const testDescriptionField = document.querySelector("#textfield-desc");
+    const dropDownButton = document.querySelector(".dropdown-button");
+    const testTaskButton = document.querySelector("#create-task-button");
+
+
+    // Ready to create new task             
+    const task = document.createElement("div"); 
+    const checkBox = document.createElement("input"); 
+    const detailsButton = document.createElement("button");
+    // START: Checkbox on task
+    checkBox.type = "checkbox";
+    checkBox.style.float= "left";  
+    checkBox.style.height = "50px";
+    checkBox.style.marginRight = "10px";  
+    // END: Checkbox on task
+    
+    // START: Task
+    if ( dropDownButton.textContent === "High" ) {
+        task.style.backgroundColor = "red"; 
+    } else if ( dropDownButton.textContent === "Medium" ) {
+        task.style.backgroundColor = "yellow"; 
+    } else if ( dropDownButton.textContent === "Low" ) {
+        task.style.backgroundColor = "green"; 
+    }
+    task.style.height = "50px"; 
+    
+    task.style.marginTop = "10px";
+    
+    task.style.fontSize = "50px"; 
+    
+    task.textContent = `${testFieldTask.textContent}`;
+    task.setAttribute("id", testFieldTask.textContent);
+    // END: Task
+    
+    // START: Details Button
+    detailsButton.textContent = "Details"; 
+    detailsButton.style.width = "70px";
+    detailsButton.style.height = "50px";
+    //detailsButton.style.backgroundColor = "green";
+    detailsButton.style.float = "right"
+    detailsButton.addEventListener("click", function() {
+        
+        openDetails(testFieldTask, testDescriptionField, testDateField, dropDownButton, detailsButton.parentElement);
+        
+    });
+    // END: Details Button
+    //task.style.gridColumn = "4 / span 1";
+    //task.style.gridRow = "3 / span 1";
+    
+    var counter = 0; 
+    // Add Task to localStorage 
+    setTaskInStorage(`${testFieldTask.textContent}${counter++}`, testDescriptionField.textContent); // title,description
+    setTaskInStorage(`${testFieldTask.textContent}${counter++}`, testDateField.textContent); // title, date
+    setTaskInStorage(`${testFieldTask.textContent}${counter++}`, dropDownButton.textContent); // title, priority
+    
+    
+    task.appendChild(checkBox); 
+    task.appendChild(detailsButton);
+
+    mainContainer.appendChild(task); 
 }
 
 const taskArea = () => {
@@ -451,8 +550,7 @@ const taskArea = () => {
 
        if ( checkEmpty ) {
         alert("Move onto next step of checking for valid dates...."); 
-        
-        var counterBreak = 0; 
+         
         // Run through the date input and check for valid dates
         var month = ""; 
         var day = ""; 
@@ -466,7 +564,6 @@ const taskArea = () => {
         year = testDateField.textContent.substring(6,11);
         
         // Convert the string to integers if possible 
-
         var monthInt = parseInt(month); 
         var dayInt = parseInt(day); 
         var yearInt = parseInt(year); 
@@ -476,63 +573,14 @@ const taskArea = () => {
             alert("Invalid date"); 
         } else {
             userDate = format(new Date(parseInt(year), parseInt(month)-1, parseInt(day)), "MM/dd/yyyy");
-            console.log(userDate); 
+            //console.log(userDate); 
 
-            // Ready to create new task 
-            
-            
-            
-            
-            
-            const task = document.createElement("div"); 
-            const checkBox = document.createElement("input"); 
-            const detailsButton = document.createElement("button"); 
-
-            // START: Checkbox on task
-            checkBox.type = "checkbox";
-            checkBox.style.float= "left";  
-            checkBox.style.height = "50px";
-            checkBox.style.marginRight = "10px";  
-            // END: Checkbox on task
-
-            // START: Task
-            
-            if ( dropDownButton.textContent === "High" ) {
-                task.style.backgroundColor = "red"; 
-            } else if ( dropDownButton.textContent === "Medium" ) {
-                task.style.backgroundColor = "yellow"; 
-            } else if ( dropDownButton.textContent === "Low" ) {
-                task.style.backgroundColor = "green"; 
-            }
-            task.style.height = "50px"; 
-            
-            task.style.marginTop = "10px";
-            
-            task.style.fontSize = "50px"; 
-            
-            task.textContent = `${testFieldTask.textContent}`;
-            // END: Task
-            
-            // START: Details Button
-            detailsButton.setAttribute("id", "details-button"); 
-            detailsButton.textContent = "Details"; 
-            detailsButton.style.width = "70px";
-            detailsButton.style.height = "50px";
-            //detailsButton.style.backgroundColor = "green";
-            detailsButton.style.float = "right";
-
-            detailsButton.addEventListener("click", openDetails);
-            // END: Details Button
-            //task.style.gridColumn = "4 / span 1";
-            //task.style.gridRow = "3 / span 1";
-            
-            task.appendChild(checkBox); 
-            task.appendChild(detailsButton);
-            mainContainer.appendChild(task); 
+            createTask(userDate); 
+            //mainContainer.appendChild(task); 
 
         }
 
-        console.log(`month: ${parseInt(month)} | day: ${day} | year: ${year}`);
+        //console.log(`month: ${parseInt(month)} | day: ${day} | year: ${year}`);
 
 
 
