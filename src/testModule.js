@@ -59,6 +59,75 @@ const loadHeaderBar = () => {
 
 }
 
+const getSelectedProject = () => {
+    const projectContainer = document.querySelector("#project-container"); 
+    
+
+    if ( projectContainer.hasChildNodes() ) {
+        let children = projectContainer.childNodes; 
+
+        for(let i = 0; i < children.length; i++) {
+            
+            if ( children[i].style.backgroundColor === "purple" ) {
+                return children[i]; 
+            }
+        }
+    }
+
+    return null;
+}
+
+
+const loadProjectTasks = () => {
+    const currentProject = getSelectedProject(); 
+    const currProjectLen = currentProject.textContent.length; 
+
+    for(let i = 0; i < localStorage.length; i++) {
+        let currTask = localStorage.key(i); 
+        console.log(currTask.substring(0, currProjectLen));
+        if ( currTask.substring(0, currProjectLen+1) === currentProject.textContent ) {
+            console.log("This matches!"); 
+        }
+        
+    }
+}
+const turnOffProjectBackground = (projectName) => {
+    const projectContainer = document.querySelector("#project-container"); 
+    
+
+    if ( projectContainer.hasChildNodes() ) {
+        let children = projectContainer.childNodes; 
+
+        for(let i = 0; i < children.length; i++) {
+            
+            if ( children[i].textContent !== projectName.textContent ) {
+                children[i].style.backgroundColor = ""; 
+            }
+        }
+    }
+}
+
+const createProject = (projectName) => {
+    const projectContainer = document.querySelector("#project-container"); 
+
+    const newProject = document.createElement("div"); 
+
+    newProject.setAttribute("class", "font-text");
+    newProject.textContent = projectName.textContent; 
+    newProject.style.fontSize = "35px";
+    newProject.style.fontFamily = "Print";
+    
+    newProject.addEventListener("click", function() {
+        //console.log(oneSelectedProjectOnly()); 
+        newProject.style.backgroundColor = "purple"; 
+        turnOffProjectBackground(newProject);
+        loadProjectTasks(); 
+    });
+
+    projectContainer.appendChild(newProject); 
+
+}
+
 const loadSideBar = () => {
     const contentContainer = document.querySelector("#content");
     const divContainer = document.querySelector("#main-container"); 
@@ -83,7 +152,12 @@ const loadSideBar = () => {
     createTaskButton.textContent = "Create"; 
     createTaskButton.style.marginLeft = "10px";
 
+    createTaskButton.addEventListener("click", function() {
+        createProject(taskTextField);
+    }); 
+
     taskTextField.setAttribute("id", "textfield-area");
+    taskTextField.setAttribute("class", "input-element");
     taskTextField.style.width = "150px";
     taskTextField.style.height = "25px";
     taskTextField.placeholder = "Enter project name here";
@@ -109,6 +183,7 @@ const loadSideBar = () => {
     const projectHeader = document.createElement("h1");
     const testProject = document.createElement("div"); 
 
+    projectContainer.setAttribute("id", "project-container"); 
     projectContainer.style.border = "2px solid turquoise";
     projectContainer.style.height = "85%";
     projectContainer.style.borderRadius = "25px";
@@ -116,9 +191,18 @@ const loadSideBar = () => {
     projectHeader.textContent = "Projects"; 
 
     testProject.setAttribute("class", "font-text");
-    testProject.textContent = "test";
+    testProject.textContent = "default";
     testProject.style.fontSize = "35px";
     testProject.style.fontFamily = "Print";
+    testProject.style.backgroundColor = "purple";
+    
+    testProject.addEventListener("click", function() {
+        //oneSelectedProjectOnly(testProject);
+        testProject.style.backgroundColor = "purple";
+        turnOffProjectBackground(testProject); 
+        loadProjectTasks(); 
+        
+    });
     
     //testProject.style.fontStyle = "normal";
 
@@ -466,6 +550,7 @@ const createTask = (userDate) => {
     const testDescriptionField = document.querySelector("#textfield-desc");
     const dropDownButton = document.querySelector(".dropdown-button");
     const testTaskButton = document.querySelector("#create-task-button");
+    const currentProjectDirectory = document.querySelector(".font-text"); 
 
 
     // Ready to create new task             
@@ -513,10 +598,13 @@ const createTask = (userDate) => {
     //task.style.gridRow = "3 / span 1";
     
     var counter = 0; 
+    const currentProject = getSelectedProject(); 
+    //console.log(currentProject); 
+    //console.log(currentProjectDirectory.te)
     // Add Task to localStorage 
-    setTaskInStorage(`${testFieldTask.textContent}${counter++}`, testDescriptionField.textContent); // title,description
-    setTaskInStorage(`${testFieldTask.textContent}${counter++}`, testDateField.textContent); // title, date
-    setTaskInStorage(`${testFieldTask.textContent}${counter++}`, dropDownButton.textContent); // title, priority
+    setTaskInStorage(`${currentProject.textContent}${testFieldTask.textContent}${counter++}`, testDescriptionField.textContent); // title,description
+    setTaskInStorage(`${currentProject.textContent}${testFieldTask.textContent}${counter++}`, testDateField.textContent); // title, date
+    setTaskInStorage(`${currentProject.textContent}${testFieldTask.textContent}${counter++}`, dropDownButton.textContent); // title, priority
     
     
     task.appendChild(checkBox); 
@@ -552,9 +640,9 @@ const taskArea = () => {
         alert("Move onto next step of checking for valid dates...."); 
          
         // Run through the date input and check for valid dates
-        var month = ""; 
-        var day = ""; 
-        var year = ""; 
+        let month = ""; 
+        let day = ""; 
+        let year = ""; 
 
         // Grab the month, day, and year from the testDateField and use substring to get each value
         month = testDateField.textContent.substring(0,3); 
@@ -564,10 +652,10 @@ const taskArea = () => {
         year = testDateField.textContent.substring(6,11);
         
         // Convert the string to integers if possible 
-        var monthInt = parseInt(month); 
-        var dayInt = parseInt(day); 
-        var yearInt = parseInt(year); 
-        var userDate = null; 
+        let monthInt = parseInt(month); 
+        let dayInt = parseInt(day); 
+        let yearInt = parseInt(year); 
+        let userDate = null; 
         
         if ( isNaN(monthInt) || isNaN(dayInt) || isNaN(yearInt) ) {
             alert("Invalid date"); 
